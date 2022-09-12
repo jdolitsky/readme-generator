@@ -15,3 +15,5 @@
 # vendor/
 
 README-GENERATED.md
+output/
+run

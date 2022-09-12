@@ -1,0 +1,58 @@
+name: distroless-test
+concurrency: distroless-test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Test that readme-generator works for some distroless images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make output directory
+        run: |
+          rm -rf output/
+          mkdir output/
+
+      # https://github.com/distroless/nginx
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: output/README-nginx.md
+          name: nginx
+          location: distroless.dev/nginx
+          exclude-tags: 1.20.2,1.20,1.23.0
+      
+      # https://github.com/distroless/go
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: output/README-go.md
+          name: go
+          location: distroless.dev/go
+
+      # https://github.com/distroless/php
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: output/README-php.md
+          name: php
+          location: distroless.dev/php
+
+      # https://github.com/distroless/apko
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: output/README-apko.md
+          name: apko
+          location: distroless.dev/apko
+
+      # https://github.com/distroless/melange
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: output/README-melange.md
+          name: melange
+          location: distroless.dev/melange
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: distroless-readmes
+          path: output/
