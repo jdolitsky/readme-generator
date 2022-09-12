@@ -17,7 +17,7 @@ runs:
   steps:
     - uses: actions/checkout@v3
       with:
-        repository: git@github.com:distroless/readme-generator.git
+        #repository: git@github.com:distroless/readme-generator.git
         path: readme-generator
     - name: Run readme-generator
       shell: bash
