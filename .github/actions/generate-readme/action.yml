@@ -24,10 +24,10 @@ runs:
       run: |
         set -ex
         pushd readme-generator
-        tree .
+        tree . && echo
         go build -o run .
         popd
         ./readme-generator/run \
-          -name "{{ inputs.name }}" \
-          -location "{{ inputs.name }}" \
-          -exclude-tags "{{ inputs.exclude-tags }}" > "{{ inputs.output-path }}"
+          -name "${{ inputs.name }}" \
+          -location "${{ inputs.name }}" \
+          -exclude-tags "${{ inputs.exclude-tags }}" > "${{ inputs.output-path }}"
