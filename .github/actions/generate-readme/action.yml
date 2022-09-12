@@ -22,12 +22,14 @@ runs:
     - name: Run readme-generator
       shell: bash
       run: |
-        set -ex
+        set -x
+        set -o errexit -o nounset -o errtrace -o pipefail
         pushd readme-generator
         tree . && echo
         go build -o run .
         popd
         ./readme-generator/run \
           -name "${{ inputs.name }}" \
-          -location "${{ inputs.name }}" \
-          -exclude-tags "${{ inputs.exclude-tags }}" > "${{ inputs.output-path }}"
+          -location "${{ inputs.location }}" \
+          -exclude-tags "${{ inputs.exclude-tags }}" \
+          | tee "${{ inputs.output-path }}"
