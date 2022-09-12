@@ -22,6 +22,7 @@ runs:
     - name: Run readme-generator
       shell: bash
       run: |
+        set -ex
         pushd readme-generator
         tree .
         go build -o run .
@@ -29,4 +30,4 @@ runs:
         ./readme-generator/run \
           -name "{{ inputs.name }}" \
           -location "{{ inputs.name }}" \
-          -exclude-tags "{{ inputs.exclude-tags }}" ) > "{{ inputs.output-path }}"
+          -exclude-tags "{{ inputs.exclude-tags }}" > "{{ inputs.output-path }}"
