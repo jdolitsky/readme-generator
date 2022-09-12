@@ -16,8 +16,9 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v3
-      repository: git@github.com:distroless/readme-generator.git
-      path: readme-generator
+      with:
+        repository: git@github.com:distroless/readme-generator.git
+        path: readme-generator
     - name: Run readme-generator
       shell: bash
       run: |
