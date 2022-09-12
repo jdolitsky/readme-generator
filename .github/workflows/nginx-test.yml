@@ -1,0 +1,21 @@
+name: nginx-test
+concurrency: nginx-test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Test that readme-generator works for nginx image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/generate-readme
+        with:
+          output-path: README-nginx.md
+          name: nginx
+          location: distroless.dev/nginx
+          exclude-tags: 1.20.2,1.20,1.23.0
+      - name: Print
+        run: |
+          cat README-nginx.md

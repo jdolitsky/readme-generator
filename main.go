@@ -65,9 +65,9 @@ func main() {
 }
 
 func buildTemplateInput() (*ReadmeTemplateData, error) {
-	name := flag.String("name", "", "name of the image")
-	location := flag.String("location", "", "location of the image")
-	excludeTags := flag.String("exclude-tags", "", "comma-separated list of tags to exlcude (optional)")
+	name := flag.String("name", "", "Name of the image")
+	location := flag.String("location", "", "Location of the image")
+	excludeTags := flag.String("exclude-tags", "", "Comma-separated list of tags to exlcude (optional)")
 	flag.Parse()
 	if *name == "" || *location == "" {
 		flag.Usage()

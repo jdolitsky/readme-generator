@@ -1,0 +1,27 @@
+name: generate-readme
+inputs:
+  output-path:
+    description: Name of the file to write generated README contents.
+    default: README-GENERATED.md
+  name:
+    description: Name of the image.
+    default: ""
+  location:
+    description: Location of the image.
+    default: ""
+  exclude-tags:
+    description: Comma-separated list of tags to exlcude (optional).
+    default: ""
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      repository: git@github.com:distroless/readme-generator.git
+      path: readme-generator
+    - name: Run readme-generator
+      shell: bash
+      run: |
+        (cd readme-generator && go run main.go \
+          -name "{{ inputs.name }}" \
+          -location "{{ inputs.name }}" \
+          -exclude-tags "{{ inputs.exclude-tags }}" ) > "{{ inputs.output-path }}"
