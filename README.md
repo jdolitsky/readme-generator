@@ -4,6 +4,21 @@ A README generator for Chainguard Images
 
 ## Usage
 
+### Github Actions
+
+```
+- uses: distroless/readme-generator@main
+  with:
+    repo: https://github.com/distroless/nginx
+    name: nginx
+    location: distroless.dev/nginx
+    description: "A minimal nginx base image rebuilt every night from source."
+    exclude-tags: 1.20.2,1.20,1.23.0
+    output-path: README-GENERATED.md
+```
+
+### Locally
+
 ```
 go run main.go \
   -repo https://github.com/distroless/nginx \
