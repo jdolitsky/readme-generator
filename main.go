@@ -19,10 +19,13 @@ const RekorSearchRootURL = "https://rekor.tlog.dev"
 var embeddedFS embed.FS
 
 var templateFuncs = template.FuncMap{
-	"formatTagAliases": func(tagAliases []string) string {
+	"host": func(location string) string {
+		return strings.Split(location, "/")[0]
+	},
+	"formatList": func(items []string) string {
 		tmp := []string{}
-		for _, alias := range tagAliases {
-			tmp = append(tmp, fmt.Sprintf("`%s`", alias))
+		for _, item := range items {
+			tmp = append(tmp, fmt.Sprintf("`%s`", item))
 		}
 		return strings.Join(tmp, " ")
 	},
@@ -37,13 +40,19 @@ var readmeTemplate = func() *template.Template {
 }()
 
 type ReadmeTemplateData struct {
-	Name     string
-	Location string
-	Tags     []ReadmeTemplateDataTag
+	Repo          string
+	Name          string
+	Description   string
+	Location      string
+	UsageMarkdown string
+	CosignOutput  string
+	UsesMelange   bool
+	Tags          []ReadmeTemplateDataTag
 }
 
 type ReadmeTemplateDataTag struct {
 	Aliases  []string
+	Archs    []string
 	Digest   string
 	RekorURL string
 }
@@ -65,11 +74,13 @@ func main() {
 }
 
 func buildTemplateInput() (*ReadmeTemplateData, error) {
+	repo := flag.String("repo", "", "GitHub repo URL")
 	name := flag.String("name", "", "Name of the image")
 	location := flag.String("location", "", "Location of the image")
+	description := flag.String("description", "", "Description of the image")
 	excludeTags := flag.String("exclude-tags", "", "Comma-separated list of tags to exlcude (optional)")
 	flag.Parse()
-	if *name == "" || *location == "" {
+	if *repo == "" || *name == "" || *location == "" || *description == "" {
 		flag.Usage()
 		return nil, fmt.Errorf("please provide required command-line flags")
 	}
@@ -80,9 +91,14 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 	}
 
 	input := ReadmeTemplateData{
-		Name:     *name,
-		Location: *location,
-		Tags:     tags,
+		Repo:          *repo,
+		Name:          *name,
+		Description:   *description,
+		Location:      *location,
+		UsageMarkdown: "### whoops",
+		CosignOutput:  "TODO",
+		UsesMelange:   false,
+		Tags:          tags,
 	}
 	return &input, nil
 }
@@ -126,6 +142,7 @@ func getTags(location string, excluded []string) ([]ReadmeTemplateDataTag, error
 		sort.Strings(aliases)
 		readmeTemplateDataTags = append(readmeTemplateDataTags, ReadmeTemplateDataTag{
 			Aliases:  aliases,
+			Archs:    []string{"amd64", "arm64", "armv7"},
 			Digest:   digest,
 			RekorURL: fmt.Sprintf("%s/?hash=%s", RekorSearchRootURL, digest),
 		})
