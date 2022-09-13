@@ -31,10 +31,14 @@ docker pull {{.Location}}:latest
 All distroless images are signed using [Sigstore](https://sigstore.dev)!
 
 <details>
+<br/>
 To verify an image, download <a href="https://github.com/sigstore/cosign">cosign</a> and run:
 
 ```
 COSIGN_EXPERIMENTAL=1 cosign verify {{.Location}}:latest | jq
+```
+
+```
 {{.CosignOutput}}
 ```
 

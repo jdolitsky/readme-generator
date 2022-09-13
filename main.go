@@ -5,6 +5,7 @@ import (
 	"embed"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"sort"
 	"strings"
@@ -90,6 +91,8 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		return nil, err
 	}
 
+	usesMelange := remoteFileExists(fmt.Sprintf("%s/blob/main/melange.yaml", *repo))
+
 	input := ReadmeTemplateData{
 		Repo:          *repo,
 		Name:          *name,
@@ -97,7 +100,7 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		Location:      *location,
 		UsageMarkdown: "### whoops",
 		CosignOutput:  "TODO",
-		UsesMelange:   false,
+		UsesMelange:   usesMelange,
 		Tags:          tags,
 	}
 	return &input, nil
@@ -142,7 +145,7 @@ func getTags(location string, excluded []string) ([]ReadmeTemplateDataTag, error
 		sort.Strings(aliases)
 		readmeTemplateDataTags = append(readmeTemplateDataTags, ReadmeTemplateDataTag{
 			Aliases:  aliases,
-			Archs:    []string{"amd64", "arm64", "armv7"},
+			Archs:    []string{"amd64", "arm64", "armv7"}, // TODO: get this
 			Digest:   digest,
 			RekorURL: fmt.Sprintf("%s/?hash=%s", RekorSearchRootURL, digest),
 		})
@@ -159,4 +162,16 @@ func stringInSlice(a string, list []string) bool {
 		}
 	}
 	return false
+}
+
+// https://stackoverflow.com/a/42691977
+func remoteFileExists(url string) bool {
+	resp, err := http.Head(url)
+	if err != nil {
+		return false
+	}
+	if resp.StatusCode != http.StatusOK {
+		return false
+	}
+	return true
 }

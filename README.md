@@ -19,6 +19,8 @@ go run main.go \
 This tool assumes the following:
 
 - Repos and images are publically accessible
+- The repo is hosted on GitHub and the default branch is `main`
 - `cosign` and `jq` are installed (shells out to these)
 - A GitHub actions workflow file exists called `release.yaml`
 - The repo contains a file called `USAGE.md` to populate the "Usage" section
+- The repo contains a file called `melange.yaml` to determine if it uses melange
