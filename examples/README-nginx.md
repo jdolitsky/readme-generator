@@ -42,7 +42,7 @@ If you navigate to `localhost:8080`, you should see `Hello World from Nginx Dist
 All distroless images are signed using [Sigstore](https://sigstore.dev)!
 
 <details>
-To verify an image, download [cosign](https://github.com/sigstore/cosign) and run:
+  To verify an image, download <a href="https://github.com/sigstore/cosign">cosign</a> and run:
 
 ```
 COSIGN_EXPERIMENTAL=1 cosign verify distroless.dev/nginx | jq
@@ -66,8 +66,6 @@ The following checks were performed on each of these signatures:
     "optional": {
       "Issuer": "https://token.actions.githubusercontent.com",
       "Subject": "https://github.com/distroless/nginx/.github/workflows/release.yaml@refs/heads/main",
-      "run_attempt": "1",
-      "run_id": "2626578822"
       ...
     }
   }
