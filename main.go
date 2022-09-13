@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"sort"
 	"strings"
 	"text/template"
@@ -61,7 +62,7 @@ type ReadmeTemplateDataTag struct {
 
 func check(err error) {
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
 }
@@ -87,12 +88,12 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		return nil, fmt.Errorf("please provide required command-line flags")
 	}
 
-	tags, err := getTags(*location, strings.Split(*excludeTags, ","))
+	cosignOutput, err := cosignVerifyImage(fmt.Sprintf("%s:latest", *location))
 	if err != nil {
 		return nil, err
 	}
 
-	cosignOutput, err := cosignVerifyImage(fmt.Sprintf("%s:latest", *location))
+	tags, err := getTags(*location, strings.Split(*excludeTags, ","))
 	if err != nil {
 		return nil, err
 	}
@@ -201,5 +202,10 @@ func fetchRemoteFileContents(url string) string {
 }
 
 func cosignVerifyImage(ref string) (string, error) {
-	return "", nil
+	cmd := fmt.Sprintf("COSIGN_EXPERIMENTAL=1 cosign verify %s | jq", ref)
+	b, err := exec.Command("sh", "-c", cmd).CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("running \"%s\" failed: %w", cmd, err)
+	}
+	return strings.TrimSpace(string(b)), nil
 }

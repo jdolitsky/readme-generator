@@ -42,6 +42,7 @@ To verify an image, download <a href="https://github.com/sigstore/cosign">cosign
 COSIGN_EXPERIMENTAL=1 cosign verify {{.Location}}:latest | jq
 ```
 
+Output:
 ```
 {{.CosignOutput}}
 ```
