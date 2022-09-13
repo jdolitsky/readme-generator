@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"embed"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -14,6 +15,7 @@ import (
 	"text/template"
 
 	"github.com/google/go-containerregistry/pkg/crane"
+	ispec "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 const RekorSearchRootURL = "https://rekor.tlog.dev"
@@ -152,9 +154,28 @@ func getTags(location string, excluded []string) ([]ReadmeTemplateDataTag, error
 	readmeTemplateDataTags := []ReadmeTemplateDataTag{}
 	for digest, aliases := range digests {
 		sort.Strings(aliases)
+
+		// determine the supported architectures
+		digestLocation := fmt.Sprintf("%s@%s", location, digest)
+		b, err := crane.Manifest(digestLocation)
+		if err != nil {
+			return nil, fmt.Errorf("unable to fetch manifest at %s: %w", digestLocation, err)
+		}
+		var index ispec.Index
+		if err := json.Unmarshal(b, &index); err != nil {
+			return nil, fmt.Errorf("unable to convert manifest to OCI Index at %s: %w", digestLocation, err)
+		}
+		archs := []string{}
+		for _, m := range index.Manifests {
+			if m.Platform != nil {
+				archs = append(archs, m.Platform.Architecture+m.Platform.Variant)
+			}
+		}
+		sort.Strings(archs)
+
 		readmeTemplateDataTags = append(readmeTemplateDataTags, ReadmeTemplateDataTag{
 			Aliases:  aliases,
-			Archs:    []string{"amd64", "arm64", "armv7"}, // TODO: get this
+			Archs:    archs,
 			Digest:   digest,
 			RekorURL: fmt.Sprintf("%s/?hash=%s", RekorSearchRootURL, digest),
 		})
