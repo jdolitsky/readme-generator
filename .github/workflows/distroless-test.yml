@@ -17,40 +17,14 @@ jobs:
           mkdir output/
 
       # https://github.com/distroless/nginx
-      - uses: ./.github/actions/generate-readme
+      - uses: distroless/readme-generator@main
         with:
           output-path: output/README-nginx.md
+          repo: https://github.com/distroless/nginx
           name: nginx
           location: distroless.dev/nginx
+          description: "A minimal nginx base image rebuilt every night from source."
           exclude-tags: 1.20.2,1.20,1.23.0
-      
-      # https://github.com/distroless/go
-      - uses: ./.github/actions/generate-readme
-        with:
-          output-path: output/README-go.md
-          name: go
-          location: distroless.dev/go
-
-      # https://github.com/distroless/php
-      - uses: ./.github/actions/generate-readme
-        with:
-          output-path: output/README-php.md
-          name: php
-          location: distroless.dev/php
-
-      # https://github.com/distroless/apko
-      - uses: ./.github/actions/generate-readme
-        with:
-          output-path: output/README-apko.md
-          name: apko
-          location: distroless.dev/apko
-
-      # https://github.com/distroless/melange
-      - uses: ./.github/actions/generate-readme
-        with:
-          output-path: output/README-melange.md
-          name: melange
-          location: distroless.dev/melange
 
       - uses: actions/upload-artifact@v3
         with:
