@@ -79,7 +79,7 @@ func main() {
 }
 
 func buildTemplateInput() (*ReadmeTemplateData, error) {
-	repo := flag.String("repo", "", "GitHub repo URL")
+	repo := flag.String("repo", "", "GitHub repo URL (https)")
 	name := flag.String("name", "", "Name of the image")
 	location := flag.String("location", "", "Location of the image")
 	description := flag.String("description", "", "Description of the image")

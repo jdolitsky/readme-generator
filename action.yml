@@ -3,11 +3,17 @@ inputs:
   output-path:
     description: Name of the file to write generated README contents.
     default: README-GENERATED.md
+  repo:
+    description: GitHub repo URL (https)
+    default: ""
   name:
     description: Name of the image.
     default: ""
   location:
     description: Location of the image.
+    default: ""
+  description:
+    description: Description of the image.
     default: ""
   exclude-tags:
     description: Comma-separated list of tags to exlcude (optional).
@@ -15,21 +21,27 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
-      with:
-        #repository: git@github.com:distroless/readme-generator.git
-        path: readme-generator
-    - name: Run readme-generator
+    - name: Ensure cosign
+      uses: sigstore/cosign-installer@main
+    - name: Build and run readme-generator
       shell: bash
       run: |
         set -x
         set -o errexit -o nounset -o errtrace -o pipefail
-        pushd readme-generator
-        tree . && echo
-        go build -o run .
-        popd
+        cosign version
+        if [[ ! -d readme-generator ]]; then
+          git clone https://github.com/distroless/readme-generator
+        fi
+        if [[ ! -f readme-generator/run ]];
+          pushd readme-generator
+          tree . && echo
+          go build -o run .
+          popd
+        fi
         ./readme-generator/run \
+          -repo "${{ inputs.repo }}" \
           -name "${{ inputs.name }}" \
           -location "${{ inputs.location }}" \
+          -description "${{ inputs.description }}" \
           -exclude-tags "${{ inputs.exclude-tags }}" \
           | tee "${{ inputs.output-path }}"
