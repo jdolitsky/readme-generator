@@ -1,5 +1,9 @@
 # {{.Name}}
 
+<!---
+Note: Do NOT edit directly, this file was generated using https://github.com/distroless/readme-generator
+-->
+
 [![CI status]({{.Repo}}/actions/workflows/release.yaml/badge.svg)]({{.Repo}}/actions/workflows/release.yaml)
 
 {{.Description}}

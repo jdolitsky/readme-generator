@@ -92,6 +92,11 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		return nil, err
 	}
 
+	cosignOutput, err := cosignVerifyImage(fmt.Sprintf("%s:latest", *location))
+	if err != nil {
+		return nil, err
+	}
+
 	rawUsageURL := fmt.Sprintf("%s/main/USAGE.md", strings.Replace(*repo, "https://github.com", "https://raw.githubusercontent.com", 1))
 	usageMarkdown := fetchRemoteFileContents(rawUsageURL)
 	usesMelange := remoteFileExists(fmt.Sprintf("%s/blob/main/melange.yaml", *repo))
@@ -102,8 +107,8 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		Description:   *description,
 		Location:      *location,
 		UsageMarkdown: usageMarkdown,
-		CosignOutput:  "TODO",
 		UsesMelange:   usesMelange,
+		CosignOutput:  cosignOutput,
 		Tags:          tags,
 	}
 	return &input, nil
@@ -193,4 +198,8 @@ func fetchRemoteFileContents(url string) string {
 		return ""
 	}
 	return string(b)
+}
+
+func cosignVerifyImage(ref string) (string, error) {
+	return "", nil
 }

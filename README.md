@@ -19,6 +19,7 @@ go run main.go \
 This tool assumes the following:
 
 - Repos and images are publically accessible
+- The image has a `latest` tag
 - The repo is hosted on GitHub and the default branch is `main`
 - `cosign` and `jq` are installed (shells out to these)
 - A GitHub actions workflow file exists called `release.yaml`
