@@ -5,6 +5,7 @@ import (
 	"embed"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"sort"
@@ -91,6 +92,8 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		return nil, err
 	}
 
+	rawUsageURL := fmt.Sprintf("%s/main/USAGE.md", strings.Replace(*repo, "https://github.com", "https://raw.githubusercontent.com", 1))
+	usageMarkdown := fetchRemoteFileContents(rawUsageURL)
 	usesMelange := remoteFileExists(fmt.Sprintf("%s/blob/main/melange.yaml", *repo))
 
 	input := ReadmeTemplateData{
@@ -98,7 +101,7 @@ func buildTemplateInput() (*ReadmeTemplateData, error) {
 		Name:          *name,
 		Description:   *description,
 		Location:      *location,
-		UsageMarkdown: "### whoops",
+		UsageMarkdown: usageMarkdown,
 		CosignOutput:  "TODO",
 		UsesMelange:   usesMelange,
 		Tags:          tags,
@@ -174,4 +177,20 @@ func remoteFileExists(url string) bool {
 		return false
 	}
 	return true
+}
+
+func fetchRemoteFileContents(url string) string {
+	resp, err := http.Get(url)
+	if err != nil {
+		return ""
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return ""
+	}
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return ""
+	}
+	return string(b)
 }
