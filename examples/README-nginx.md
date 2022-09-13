@@ -1,5 +1,7 @@
 # nginx
 
+[![go](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/go.yml/badge.svg)](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/go.yml)
+
 A minimal nginx base image rebuilt every night from source.
 
 ## Get It!
