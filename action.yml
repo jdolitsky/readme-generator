@@ -30,7 +30,7 @@ runs:
         set -o errexit -o nounset -o errtrace -o pipefail
         cosign version
         if [[ ! -d readme-generator ]]; then
-          git clone https://github.com/distroless/readme-generator
+          git clone https://github.com/distroless/readme-generator.git
         fi
         if [[ ! -f readme-generator/run ]];
           pushd readme-generator
