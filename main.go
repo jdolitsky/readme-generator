@@ -126,10 +126,11 @@ func getTags(location string, excluded []string) ([]ReadmeTemplateDataTag, error
 	// Filter out:
 	// 1. cosign-related tags
 	// 2. tags produced by apko-snapshot action
-	// 3. tags explicitly to be excluded
+	// 3. "root-" tags, one-off case for the git image
+	// 4. tags explicitly to be excluded
 	filteredTags := []string{}
 	for _, tag := range allTags {
-		if strings.HasPrefix(tag, "sha256-") || strings.HasPrefix(tag, "latest-") || stringInSlice(tag, excluded) {
+		if strings.HasPrefix(tag, "sha256-") || strings.HasPrefix(tag, "latest-") || strings.HasPrefix(tag, "root-") || stringInSlice(tag, excluded) {
 			continue
 		}
 		filteredTags = append(filteredTags, tag)
