@@ -18,10 +18,10 @@ docker pull {{.Location}}:latest
 
 ## Supported tags
 
-| Tag | Digest | Arch | Signature |
-| --- | ------ | ---- | --------- |
+| Tag | Digest | Arch |
+| --- | ------ | ---- |
 {{- range $tag := .Tags}}
-| {{formatList $tag.Aliases}} | `{{$tag.Digest}}` | {{formatList $tag.Archs}} | [View Rekor entry]({{$tag.RekorURL}}) |
+| {{formatList $tag.Aliases}} | `{{$tag.Digest}}`<br/>[View Rekor entry]({{$tag.RekorURL}}) | {{formatList $tag.Archs}} |
 {{- end }}
 
 {{ if .UsageMarkdown }}

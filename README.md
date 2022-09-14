@@ -13,7 +13,7 @@ A README generator for Chainguard Images
     name: nginx
     location: distroless.dev/nginx
     description: "A minimal nginx base image rebuilt every night from source."
-    exclude-tags: 1.20.2,1.20,1.23.0
+    exclude-tags: 1.20.2-r0,1.20.2,1.20,1.23.0
     output-path: README-GENERATED.md
 ```
 
@@ -25,7 +25,7 @@ go run main.go \
   -name nginx \
   -location distroless.dev/nginx \
   -description "A minimal nginx base image rebuilt every night from source." \
-  -exclude-tags 1.20.2,1.20,1.23.0 \
+  -exclude-tags 1.20.2-r0,1.20.2,1.20,1.23.0 \
   > README-GENERATED.md
 ```
 
