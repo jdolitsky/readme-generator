@@ -21,7 +21,7 @@ docker pull {{.Location}}:latest
 | Tag | Digest | Arch |
 | --- | ------ | ---- |
 {{- range $tag := .Tags}}
-| {{formatList $tag.Aliases}} | `{{$tag.Digest}}`<br/>[View Rekor entry]({{$tag.RekorURL}}) | {{formatList $tag.Archs}} |
+| {{formatList $tag.Aliases}} | `{{$tag.Digest}}`<br/>[View entry in Rekor]({{$tag.RekorURL}}) | {{formatList $tag.Archs}} |
 {{- end }}
 
 {{ if .UsageMarkdown }}
