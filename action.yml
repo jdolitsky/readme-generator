@@ -39,9 +39,9 @@ runs:
           popd
         fi
         ./readme-generator/run \
-          -repo "${{ inputs.repo }}" \
-          -name "${{ inputs.name }}" \
-          -location "${{ inputs.location }}" \
-          -description "${{ inputs.description }}" \
-          -exclude-tags "${{ inputs.exclude-tags }}" \
-          | tee "${{ inputs.output-path }}"
+          -repo '${{ inputs.repo }}' \
+          -name '${{ inputs.name }}' \
+          -location '${{ inputs.location }}' \
+          -description '${{ inputs.description }}' \
+          -exclude-tags '${{ inputs.exclude-tags }}' \
+          | tee '${{ inputs.output-path }}'
