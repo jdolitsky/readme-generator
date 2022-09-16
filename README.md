@@ -15,6 +15,17 @@ A README generator for Chainguard Images
     description: "A minimal nginx base image rebuilt every night from source."
     exclude-tags: 1.20.2-r0,1.20.2,1.20,1.23.0
     output-path: README-GENERATED.md
+    push-to-repo: true
+    push-to-repo-message: "Regenerate README.md"
+```
+
+Note: if `push-to-repo: true` is set, this action will attempt to push back to the repo.
+This will require setting the following permissions on the job context:
+
+```
+    permissions:
+      id-token: write
+      contents: write
 ```
 
 ### Locally

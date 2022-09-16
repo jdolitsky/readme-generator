@@ -21,6 +21,9 @@ inputs:
   push-to-repo:
     description: If set to true, copy output path to README.md and attempt to commit back to the repo.
     default: 'false'
+  push-to-repo-message:
+    description: If pushing to repo, the text for the commit message made to the repo.
+    default: 'Regenerate README.md'
 runs:
   using: composite
   steps:
@@ -60,9 +63,12 @@ runs:
           echo "No diff detected in README. Skipping."
           exit 0
         fi
-        git config user.name "Automated"
-        git config user.email "actions@users.noreply.github.com"
+        git config author.name "${{ github.actor }}"
+        git config author.email "${{ github.actor }}@users.noreply.github.com"
+        git config committer.name "GitHub"
+        git config committer.email "noreply@github.com"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
         mv "${{ inputs.output-path }}" README.md
         git add README.md
-        git commit -m "Regenerate README.md"
+        git commit --signoff -m "${{ inputs.push-to-repo-message }}"
         git push
