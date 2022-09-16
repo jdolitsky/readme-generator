@@ -63,11 +63,10 @@ runs:
           echo "No diff detected in README. Skipping."
           exit 0
         fi
-        git config author.name "${{ github.actor }}"
-        git config author.email "${{ github.actor }}@users.noreply.github.com"
-        git config committer.name "GitHub"
-        git config committer.email "noreply@github.com"
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git config author.name "github-actions[bot]"
+        git config author.email "github-actions[bot]@users.noreply.github.com"
+        git config committer.name "github-actions[bot]"
+        git config committer.email "github-actions[bot]@users.noreply.github.com"
         mv "${{ inputs.output-path }}" README.md
         git add README.md
         git commit --signoff -m "${{ inputs.push-to-repo-message }}"
