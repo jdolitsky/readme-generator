@@ -7,11 +7,11 @@ A README generator for Chainguard Images
 ### Github Actions
 
 ```
-- uses: distroless/readme-generator@main
+- uses: chainguard-images/readme-generator@main
   with:
-    repo: https://github.com/distroless/nginx
+    repo: https://github.com/chainguard-images/nginx
     name: nginx
-    location: distroless.dev/nginx
+    location: cgr.dev/chainguard/nginx
     description: "A minimal nginx base image rebuilt every night from source."
     exclude-tags: 1.20.2-r0,1.20.2,1.20,1.23.0
     output-path: README-GENERATED.md
@@ -32,9 +32,9 @@ This will require setting the following permissions on the job context:
 
 ```
 go run main.go \
-  -repo https://github.com/distroless/nginx \
+  -repo https://github.com/chainguard-images/nginx \
   -name nginx \
-  -location distroless.dev/nginx \
+  -location cgr.dev/chainguard/nginx \
   -description "A minimal nginx base image rebuilt every night from source." \
   -exclude-tags 1.20.2-r0,1.20.2,1.20,1.23.0 \
   > README-GENERATED.md

@@ -1,7 +1,7 @@
 # {{.Name}}
 
 <!---
-Note: Do NOT edit directly, this file was generated using https://github.com/distroless/readme-generator
+Note: Do NOT edit directly, this file was generated using https://github.com/chainguard-images/readme-generator
 -->
 
 [![CI status]({{.Repo}}/actions/workflows/release.yaml/badge.svg)]({{.Repo}}/actions/workflows/release.yaml)
@@ -32,7 +32,7 @@ docker pull {{.Location}}:latest
 
 ## Signing
 
-All distroless images are signed using [Sigstore](https://sigstore.dev)!
+All Chainguard Images are signed using [Sigstore](https://sigstore.dev)!
 
 <details>
 <br/>
