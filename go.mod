@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/google/go-containerregistry v0.11.0
 	github.com/opencontainers/image-spec v1.0.3-0.20220114050600-8b9d41f48198
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (

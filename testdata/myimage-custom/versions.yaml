@@ -1,0 +1,17 @@
+alternatives:
+  - name: glibc
+custom: true
+versions:
+  - version: 1.23.2
+    tags:
+      - latest
+      - mainline
+    source:
+      uri: https://nginx.org/download/nginx-1.23.2.tar.gz
+      sha256: a80cc272d3d72aaee70aa8b517b4862a635c0256790434dbfc4d618a999b0b46
+  - version: 1.22.1
+    tags:
+      - stable
+    source:
+      uri: https://nginx.org/download/nginx-1.22.1.tar.gz
+      sha256: 9ebb333a9e82b952acd3e2b4aeb1d4ff6406f72491bab6cd9fe69f0dea737f31

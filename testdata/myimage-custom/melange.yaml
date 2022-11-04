@@ -1,0 +1,31 @@
+package:
+  name: myimage-custom
+  version: {{ .version }}
+  epoch: 0
+  description: "my custom image"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: BSD-2-Clause
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://dl-cdn.alpinelinux.org/alpine/edge/main
+    packages:
+      - alpine-baselayout-data
+      - busybox
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: {{ .uri }}
+      expected-sha256: {{ .sha256 }}
+  - name: Do stuff
+    runs: |
+      ls -la

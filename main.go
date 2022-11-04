@@ -14,6 +14,8 @@ import (
 	"strings"
 	"text/template"
 
+	"gopkg.in/yaml.v3"
+
 	"github.com/google/go-containerregistry/pkg/crane"
 	ispec "github.com/opencontainers/image-spec/specs-go/v1"
 )
@@ -69,7 +71,7 @@ func check(err error) {
 	}
 }
 
-func main() {
+func mainOld() {
 	input, err := buildTemplateInput()
 	check(err)
 	var buf bytes.Buffer
@@ -230,4 +232,41 @@ func cosignVerifyImage(ref string) (string, error) {
 		return "", fmt.Errorf("running \"%s\" failed: %w", cmd, err)
 	}
 	return strings.TrimSpace(string(b)), nil
+}
+
+type VersionsManifest struct {
+	Alternatives []VersionsManifestAlternative `yaml:"alternatives"`
+	Custom       bool                          `yaml:"custom"`
+	Versions     []VersionsManifestVersion     `yaml:"versions"`
+}
+
+type VersionsManifestAlternative struct {
+	Name string `yaml:"name"`
+}
+
+type VersionsManifestVersion struct {
+	Version string                        `yaml:"version"`
+	Tags    []string                      `yaml:"tags"`
+	Source  VersionsManifestVersionSource `yaml:"source"`
+}
+
+type VersionsManifestVersionSource struct {
+	Uri    string `yaml:"uri"`
+	Sha256 string `yaml:"sha256"`
+}
+
+// go build -o repo-enforcer . && (cd testdata/myimage-custom/ && ../../repo-enforcer)
+func main() {
+	f, err := os.Open("versions.yaml")
+	check(err)
+	defer f.Close()
+
+	b, err := io.ReadAll(f)
+	check(err)
+
+	var m VersionsManifest
+	err = yaml.Unmarshal(b, &m)
+	check(err)
+
+	fmt.Println(m.Versions)
 }
